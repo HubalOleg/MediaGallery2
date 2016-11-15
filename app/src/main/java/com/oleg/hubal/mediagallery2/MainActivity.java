@@ -24,6 +24,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        loadMediaPagerWithPermission();
     }
 
 
@@ -31,22 +33,10 @@ public class MainActivity extends AppCompatActivity {
     private void loadMediaPager() {
         ViewPager mediaPager = (ViewPager) findViewById(R.id.vp_media_pager);
         MediaPagerAdapter mediaPagerAdapter = new MediaPagerAdapter(getSupportFragmentManager());
-        mediaPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageSelected(int position) {
-
-            }
-
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
-
-            @Override
-            public void onPageScrollStateChanged(int state) {}
-        });
         mediaPager.setAdapter(mediaPagerAdapter);
     }
 
-    private void showGalleryWithPermission() {
+    private void loadMediaPagerWithPermission() {
         mRootContainer = (LinearLayout) findViewById(R.id.activity_main);
         if (ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -57,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void requestExternalStoragePermission() {
-        if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+        if (ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this,
                 Manifest.permission.READ_EXTERNAL_STORAGE)) {
             Snackbar.make(mRootContainer, R.string.permission_storage_rationale,
                     Snackbar.LENGTH_INDEFINITE)
@@ -70,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
                     })
                     .show();
         } else {
-            ActivityCompat.requestPermissions(this, PERMISSION_STORAGE, REQUEST_STORAGE);
+            ActivityCompat.requestPermissions(MainActivity.this, PERMISSION_STORAGE, REQUEST_STORAGE);
         }
     }
 
